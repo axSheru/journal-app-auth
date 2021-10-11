@@ -7,7 +7,6 @@ import authApi from "@/api/authApi"
 
 export const createUser = async ( { commit }, user ) => {
     const { name, email, password } = user
-    console.warn(commit)
 
     try {
 
@@ -16,7 +15,8 @@ export const createUser = async ( { commit }, user ) => {
 
         await authApi.post(':update', { displayName: name, idToken })
 
-        //TODO: Mutation: loginUser
+        delete user.password
+        commit('loginUser', { user, idToken, refreshToken })
 
         return { ok: true }
 
