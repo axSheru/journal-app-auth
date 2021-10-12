@@ -17,7 +17,15 @@ const useAuth = () => {
 
     }
 
+    const checkAuthStatus = async() => {
+        
+        const resp = await store.dispatch('auth/checkAuthentication')
+        return resp
+
+    }
+
     return {
+        checkAuthStatus,
         createUser,
         loginUser,
     }
