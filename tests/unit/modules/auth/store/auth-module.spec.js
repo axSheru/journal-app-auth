@@ -85,10 +85,8 @@ describe('Vuex: Pruebas en el auth-module.', () => {
             refreshToken: 'XYZ-123'
         })
 
-        expect( store.getters['auth/currentState'] ).toBe( 'authenticated' )
+        expect( store.getters['auth/username'] ).toBe( 'Alex' )
 
     })
-    
-    
 
 })
