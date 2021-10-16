@@ -56,6 +56,7 @@ describe('Vuex: Pruebas en el auth-module.', () => {
             idToken: 'ABC-123',
             refreshToken: 'XYZ-123'
         })
+
         localStorage.setItem( 'idToken', 'ABC-123' )
         localStorage.setItem( 'refreshToken', 'XYZ-123' )
 
@@ -72,6 +73,22 @@ describe('Vuex: Pruebas en el auth-module.', () => {
         expect( localStorage.getItem('refreshToken') ).toBe( null )
 
     })
+
+    //Getters
+
+    test('Getter: username.', () => {
+        
+        const store = createVuexStore({
+            status: 'authenticated',// 'authenticated', 'not-authenticated', 'authenticating'
+            user: { name: 'Alex', email: 'alex@gmail.com' },
+            idToken: 'ABC-123',
+            refreshToken: 'XYZ-123'
+        })
+
+        expect( store.getters['auth/currentState'] ).toBe( 'authenticated' )
+
+    })
+    
     
 
 })
