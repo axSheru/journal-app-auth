@@ -1,3 +1,4 @@
+import axios from 'axios'
 import createVuexStore from '../../../mock-data/mock-store'
 
 describe('Vuex: Pruebas en el auth-module.', () => {
@@ -125,6 +126,42 @@ describe('Vuex: Pruebas en el auth-module.', () => {
         expect( user ).toBe( null )
         expect( idToken ).toBe( null )
         expect( refreshToken ).toBe( null )
+
+    })
+    
+    test('Actions: createUser signInUser - Crea el usuario.', async() => {
+        
+        const store = createVuexStore({
+            status: 'not-authenticated',// 'authenticated', 'not-authenticated', 'authenticating'
+            user: null,
+            idToken: null,
+            refreshToken: null
+        })
+
+        const newUser = { name: 'Test User 2', email: 'test2@test.com', password: '123456' }
+
+        //SignIn.
+
+        await store.dispatch('auth/sighInUser', newUser)
+        const { idToken } = store.state.auth
+
+        //Borrar el usuario.
+
+        const deleteResp = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyC6VmQ0O0lIpUg4DMhB3L6uhAm5xYWo3AM`, {
+            idToken
+        })
+
+        //Crear el usuario.
+        const resp = await store.dispatch('auth/createUser', newUser)
+
+        expect( resp ).toEqual({ ok: true })
+
+        const { status, user, idToken:token, refreshToken } = store.state.auth
+
+        expect( status ).toBe( 'authenticated' )
+        expect( user ).toMatchObject({ name: 'Test User 2', email: 'test2@test.com' })
+        expect( typeof idToken ).toBe( 'string' )
+        expect( typeof refreshToken ).toBe( 'string' )
 
     })
     
