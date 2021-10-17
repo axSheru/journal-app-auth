@@ -142,7 +142,7 @@ describe('Vuex: Pruebas en el auth-module.', () => {
 
         //SignIn.
 
-        await store.dispatch('auth/sighInUser', newUser)
+        await store.dispatch('auth/signInUser', newUser)
         const { idToken } = store.state.auth
 
         //Borrar el usuario.
