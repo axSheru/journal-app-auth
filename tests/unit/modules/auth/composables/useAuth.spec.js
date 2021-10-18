@@ -68,6 +68,18 @@ describe('Pruebas en useAuth.', () => {
         
     })
     
+    test('checkAuthStatus.', async () => {
+
+        const { checkAuthStatus } = useAuth()
+
+        mockStore.dispatch.mockReturnValue({ ok: true })
+
+        const resp = await checkAuthStatus()
+
+        expect( mockStore.dispatch ).toHaveBeenCalledWith( 'auth/checkAuthentication' )
+        
+    })
+    
 })
 
 
