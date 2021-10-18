@@ -14,6 +14,8 @@ describe('Pruebas en el NavBar component.', () => {
         idToken: 'ABC',
         refreshToken: 'XYZ'
     })
+
+    beforeEach( () => jest.clearAllMocks() )
     
     test('Debe de mostrar el componente correctamente.', () => {
 
@@ -27,5 +29,25 @@ describe('Pruebas en el NavBar component.', () => {
         
     })
     
+    test('Clic en el logout, debe de cerrar sesión y redireccionar.', async () => {
+        
+        const wrapper = shallowMount( NavBar, {
+            global: {
+                plugins: [ store ]
+            }
+        })
 
+        await wrapper.find('button').trigger('click')
+
+        expect( wrapper.router.push ).toHaveBeenCalledWith({ name: 'login' })
+
+        expect( store.state.auth ).toEqual({
+            user: null,
+            status: 'not-authenticated',
+            idToken: null,
+            refreshToken: null
+        })
+
+    })
+    
 })
