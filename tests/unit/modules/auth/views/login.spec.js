@@ -52,4 +52,25 @@ describe('Pruebas en el login component.', () => {
 
     })
     
+    test('Credenciales correctas, debe de redirigir a no-entry view.', async() => {
+        
+        store.dispatch.mockReturnValueOnce({ ok: true })
+        
+        const wrapper = shallowMount( Login, {
+            global: {
+                plugins: [ store ]
+            }
+        })
+
+        const [ txtEmail, txtPassword ] = wrapper.findAll('input')
+        await txtEmail.setValue('ale@gmail.com')
+        await txtPassword.setValue('123456')
+
+        await wrapper.find('form').trigger('submit')
+
+        expect( store.dispatch ).toHaveBeenCalledWith( 'auth/signInUser', { email: 'ale@gmail.com', password: '123456' } )
+        expect( wrapper.router.push ).toHaveBeenCalledWith({ name: 'no-entry' })
+
+    })
+    
 })
